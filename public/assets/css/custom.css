@@ -1,147 +1,285 @@
 /*
  * File: public/assets/css/custom.css
- * Tema: List Group "Rame" dan Elegan
+ * Tema: "Vibrant Gradient"
+ * Desain ini memenuhi permintaan kustom untuk tampilan yang colorful dan modern.
  */
 
 /* 1. Import Font & Variabel */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Open+Sans:wght@400;600&display=swap');
 
 :root {
-    --font-main: 'Poppins', sans-serif;
-    --bg-main: #f0f2f5;
-    --bg-card: #ffffff;
-    --bg-header: #f8f9fa;
-    --border-color: #e9ecef;
-    --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.04);
-    --shadow-hover: 0 6px 16px rgba(0, 0, 0, 0.08);
+    /* Tipografi */
+    --font-heading: 'Poppins', sans-serif;
+    --font-body: 'Open Sans', sans-serif;
+
+    /* Warna Utama (Gradient) */
+    --grad-start: #667eea;
+    --grad-end: #764ba2;
+    --grad-primary: linear-gradient(135deg, var(--grad-start) 0%, var(--grad-end) 100%);
+
+    /* Warna Background */
+    --bg-light: #f4f6fb;
+    --bg-dark-pattern: #e9eef8;
+
+    /* Warna Aksen & Status */
+    --color-white: #ffffff;
     --color-text: #212529;
     --color-text-muted: #6c757d;
-    --color-unfinished-bg: rgba(220, 53, 69, 0.1);
-    --color-finished-bg: rgba(25, 135, 84, 0.1);
-    --color-unfinished: #dc3545;
-    --color-finished: #198754;
-    --border-radius-lg: 16px;
-    --border-radius-md: 12px;
+    --color-completed: #198754; /* Hijau untuk Selesai */
+    --color-completed-bg: rgba(25, 135, 84, 0.1);
+    --color-active: #dc3545; /* Merah untuk Belum Selesai */
+    --color-active-bg: rgba(220, 53, 69, 0.1);
+
+    /* UI */
+    --radius-main: 16px;
+    --radius-item: 8px;
+    --shadow-medium: 0 10px 30px rgba(0, 0, 0, 0.1);
+    --shadow-light: 0 4px 12px rgba(0, 0, 0, 0.07);
+    --shadow-hover: 0 12px 35px rgba(102, 126, 234, 0.2);
+    --shadow-btn: 0 4px 15px rgba(118, 75, 162, 0.3);
 }
 
-/* 2. Style Dasar */
+/* 2. Style Dasar & Background Geometric */
 body {
-    background-color: var(--bg-main);
-    font-family: var(--font-main);
+    font-family: var(--font-body);
     color: var(--color-text);
+    line-height: 1.6;
+
+    /* Background: Soft gradient + pattern geometric subtle */
+    background-color: var(--bg-light);
+    background-image: 
+        /* Pola geometris (garis diagonal tipis) */
+        repeating-linear-gradient(
+            -45deg, 
+            transparent, 
+            transparent 15px, 
+            var(--bg-dark-pattern) 15px, 
+            var(--bg-dark-pattern) 16px
+        ),
+        /* Gradient latar belakang utama */
+        linear-gradient(to bottom, var(--bg-light) 0%, #fdfaff 100%);
+    
+    background-attachment: fixed; /* Membuat pattern tetap */
 }
 
-.main-container {
-    padding-top: 3rem;
-    padding-bottom: 3rem;
+/* 3. Tipografi */
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6,
+.todo-title, 
+.modal-title {
+    font-family: var(--font-heading);
+    font-weight: 600;
 }
 
+/* 4. Kontainer Utama & Header Menonjol */
 .main-card {
-    background-color: var(--bg-card);
+    background-color: var(--color-white);
     border: none;
-    border-radius: var(--border-radius-lg);
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+    border-radius: var(--radius-main);
+    box-shadow: var(--shadow-medium);
+    overflow: hidden; /* Penting untuk header kustom */
 }
 
 .main-card .card-body {
-    padding: 2.5rem;
+    padding: 0; /* Hapus padding default */
 }
 
-@media (max-width: 768px) {
-    .main-card .card-body {
-        padding: 1.5rem;
-    }
+/* Header Section yang Menonjol */
+.card-body > .d-flex.justify-content-between {
+    padding: 2rem 2.5rem;
+    background: linear-gradient(to right, #f8faff, #f5f8ff);
+    border-bottom: 1px solid var(--bg-dark-pattern);
+    margin-bottom: 2rem;
 }
 
-/* 3. Form Filter */
-.filter-form .form-label {
-    font-size: 0.85rem;
-    font-weight: 500;
-}
-.filter-form .form-select,
-.filter-form .form-control {
-    border-radius: var(--border-radius-md);
+.card-body > .d-flex.justify-content-between h1 {
+    color: var(--grad-end); /* Warna dari gradient */
 }
 
-/* 4. Tampilan "Rame" - List Group */
+/* Padding untuk sisa konten di dalam card-body */
+.filter-form,
 #sortable-list {
-    margin-top: 2rem;
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
 }
 
-.list-group-item {
-    background-color: var(--bg-card);
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius-md) !important; /* !important untuk override bootstrap */
-    margin-bottom: 1rem;
-    box-shadow: var(--shadow-soft);
-    transition: all 0.3s ease;
-    padding: 1.25rem;
+#sortable-list {
+    padding-bottom: 2.5rem;
 }
 
-.list-group-item:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-hover);
-}
-
-/* Style saat di-drag */
-.list-group-item.sortable-ghost {
-    background: #f0faff;
-    opacity: 0.7;
-}
-
-/* 5. Konten di dalam List Item */
-.drag-handle {
-    cursor: grab;
-    color: var(--color-text-muted);
-    transition: color 0.2s ease;
-}
-.drag-handle:active { cursor: grabbing; }
-.drag-handle:hover { color: #0d6efd; }
-
-.todo-content .todo-title {
-    font-size: 1.15rem;
-    font-weight: 600;
-    color: var(--color-text);
-}
-
-.todo-content .badge {
+/* 5. Tombol (Button) Gradient */
+.btn-primary {
+    background-image: var(--grad-primary);
+    background-size: 200% auto;
+    border: none;
+    border-radius: var(--radius-item);
+    font-family: var(--font-heading);
     font-weight: 500;
-}
-.badge.bg-danger {
-    background-color: var(--color-unfinished-bg) !important;
-    color: var(--color-unfinished) !important;
-}
-.badge.bg-success {
-    background-color: var(--color-finished-bg) !important;
-    color: var(--color-finished) !important;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 0.6rem 1.25rem;
+    box-shadow: var(--shadow-btn);
+    transition: all 0.4s ease;
 }
 
-.todo-content .todo-description {
-    font-size: 0.95rem;
-    color: var(--color-text-muted);
-    margin-top: 0.25rem;
+.btn-primary:hover, 
+.btn-primary:focus {
+    background-position: right center; /* Efek hover gradient */
+    color: #fff;
+    box-shadow: 0 6px 20px rgba(118, 75, 162, 0.5);
+    transform: translateY(-2px);
 }
 
-/* Tombol Aksi Bulat */
+/* Tombol Aksi di Item Tugas */
 .todo-actions .btn {
-    border-radius: 50%;
+    border-radius: 50%; /* Membuat tombol aksi bulat */
     width: 38px;
     height: 38px;
     padding: 0;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
+}
+.todo-actions .btn:hover {
+    transform: scale(1.1);
 }
 
-/* 6. Halaman Detail */
-.detail-card-body .badge {
-    font-size: 1rem;
+/* 6. Card Tugas (List Item) */
+.list-group-item {
+    background-color: var(--color-white);
+    border: 1px solid #eee;
+    border-radius: var(--radius-item) !important; /* Override Bootstrap */
+    box-shadow: var(--shadow-light);
+    margin-bottom: 1rem;
+    padding: 1.25rem 1.5rem;
+    
+    /* Hover effects */
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-left 0.3s ease;
+    border-left: 4px solid transparent; /* Persiapan untuk hover */
 }
-.detail-card-body .description-box {
-    background-color: var(--bg-main);
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius-md);
-    padding: 1.5rem;
-    font-size: 1.05rem;
+
+.list-group-item:hover {
+    transform: translateY(-4px) scale(1.01);
+    box-shadow: var(--shadow-hover);
+    border-left-color: var(--grad-start);
+}
+
+/* Handle untuk drag */
+.drag-handle {
+    cursor: grab;
+    color: #ccc;
+    transition: color 0.3s ease;
+}
+.drag-handle:hover { color: var(--grad-start); }
+.drag-handle:active { cursor: grabbing; }
+
+/* 7. Variasi Warna Status (Badges) */
+.badge.bg-success {
+    background-color: var(--color-completed-bg) !important;
+    color: var(--color-completed) !important;
+    border: 1px solid var(--color-completed);
+    font-weight: 600;
+    padding: 0.5em 0.75em;
+    border-radius: var(--radius-item);
+}
+
+.badge.bg-danger {
+    background-color: var(--color-active-bg) !important;
+    color: var(--color-active) !important;
+    border: 1px solid var(--color-active);
+    font-weight: 600;
+    padding: 0.5em 0.75em;
+    border-radius: var(--radius-item);
+}
+
+/* 8. Styling Form ("Custom Checkbox" diadaptasi) */
+/* Ini adalah adaptasi dari "custom checkbox", diterapkan pada form filter */
+.filter-form .form-label {
+    font-family: var(--font-heading);
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+}
+
+.filter-form .form-control,
+.filter-form .form-select {
+    border-radius: var(--radius-item);
+    border: 1px solid #ddd;
+    padding: 0.65rem 1rem;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.filter-form .form-control:focus,
+.filter-form .form-select:focus {
+    border-color: var(--grad-start);
+    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.2);
+    background-color: #fff;
+}
+
+/* Animasi untuk select dropdown */
+.filter-form .form-select {
+    appearance: none;
+    /* Ikon panah kustom dengan warna gradient */
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23764ba2' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 16px 12px;
+}
+
+/* 9. Modal & Halaman Detail */
+.modal-content {
+    border-radius: var(--radius-main);
+    border: none;
+    box-shadow: var(--shadow-medium);
+}
+.modal-header {
+    border-bottom: 1px solid var(--bg-dark-pattern);
+    padding: 1.5rem 1.5rem 1rem;
+}
+.modal-header .modal-title {
+    color: var(--grad-end);
+}
+
+.modal-footer { border-top: none; }
+
+/* Halaman Detail */
+.card-body .p-3.bg-light.border {
+    background-color: var(--bg-light) !important;
+    border-radius: var(--radius-item);
+    border: 1px solid var(--bg-dark-pattern) !important;
+    padding: 1.5rem !important;
+}
+
+/* Responsif */
+@media (max-width: 768px) {
+    .main-card .card-body { padding: 0; }
+    
+    .card-body > .d-flex.justify-content-between {
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        flex-direction: column;
+        align-items: flex-start !important;
+    }
+    .card-body > .d-flex.justify-content-between .btn-primary {
+        margin-top: 1rem;
+        width: 100%;
+    }
+    
+    .filter-form, #sortable-list {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+    #sortable-list { padding-bottom: 1.5rem; }
+    
+    .list-group-item {
+        padding: 1rem;
+    }
+    .todo-actions .btn {
+        width: 34px;
+        height: 34px;
+    }
 }
