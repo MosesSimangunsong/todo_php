@@ -385,6 +385,30 @@
                 const errorToast = new bootstrap.Toast(errorToastEl, { delay: 5000 }); // Hilang setelah 5 detik
                 errorToast.show();
             }
+
+            <?php if (isset($_SESSION['highlight_id'])): ?>
+                
+                // Ambil ID yang disimpan dari PHP Session
+                const highlightId = '<?= (int)$_SESSION['highlight_id'] ?>';
+                
+                // Cari elemen .list-group-item yang sesuai dengan ID tersebut
+                const highlightedElement = document.querySelector(`.list-group-item[data-id="${highlightId}"]`);
+                
+                if (highlightedElement) {
+                    // 1. Gulir halaman agar elemen terlihat (di tengah layar)
+                    highlightedElement.scrollIntoView({ 
+                        behavior: 'smooth', 
+                        block: 'center' 
+                    });
+                    
+                    // 2. Tambahkan kelas CSS untuk memicu animasi
+                    highlightedElement.classList.add('flash-in-item');
+                }
+                
+                // 3. Hapus session agar tidak berulang saat di-refresh lagi
+                <?php unset($_SESSION['highlight_id']); ?>
+                
+            <?php endif; ?>
         });
     </script>
 

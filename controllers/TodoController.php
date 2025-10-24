@@ -58,16 +58,20 @@ class TodoController
             $title = $_POST['title'];
             $description = $_POST['description'];
 
-            // Periksa apakah judul sudah ada
             if ($this->todoModel->isTitleExists($title)) {
                 $_SESSION['error_message'] = 'Gagal menambah data. Judul "' . htmlspecialchars($title) . '" sudah ada!';
             } else {
-                // Buat todo baru jika judul unik
-                $this->todoModel->createTodo($title, $description);
-                $_SESSION['success_message'] = 'Data todo berhasil ditambahkan!';
+                // PERUBAHAN: Tangkap ID baru
+                $newId = $this->todoModel->createTodo($title, $description);
+                
+                if ($newId) {
+                    $_SESSION['success_message'] = 'Data todo berhasil ditambahkan!';
+                    $_SESSION['highlight_id'] = $newId; // <-- SIMPAN ID KE SESSION
+                } else {
+                    $_SESSION['error_message'] = 'Gagal menyimpan data ke database.';
+                }
             }
         }
-        // Arahkan kembali pengguna ke halaman sebelumnya
         $this->redirectBack();
     }
 
@@ -83,18 +87,21 @@ class TodoController
             $id = $_POST['id'];
             $title = $_POST['title'];
             $description = $_POST['description'];
-            $is_finished = $_POST['is_finished'];
+            // PERBAIKAN KECIL: Pastikan ini dikonversi ke boolean
+            $is_finished = (isset($_POST['is_finished']) && $_POST['is_finished'] === 'true');
 
-            // Periksa apakah judul baru sudah ada (dan bukan milik todo ini sendiri)
             if ($this->todoModel->isTitleExists($title, $id)) {
                 $_SESSION['error_message'] = 'Gagal memperbarui data. Judul "' . htmlspecialchars($title) . '" sudah ada!';
             } else {
-                // Update todo
-                $this->todoModel->updateTodo($id, $title, $description, $is_finished);
-                $_SESSION['success_message'] = 'Data todo berhasil diperbarui!';
+                // PERUBAHAN: Cek hasil update
+                if ($this->todoModel->updateTodo($id, $title, $description, $is_finished)) {
+                    $_SESSION['success_message'] = 'Data todo berhasil diperbarui!';
+                    $_SESSION['highlight_id'] = (int)$id; // <-- SIMPAN ID KE SESSION
+                } else {
+                    $_SESSION['error_message'] = 'Gagal memperbarui data di database.';
+                }
             }
         }
-        // Arahkan kembali pengguna ke halaman sebelumnya
         $this->redirectBack();
     }
 

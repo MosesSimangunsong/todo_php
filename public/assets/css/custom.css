@@ -283,3 +283,27 @@ h1, h2, h3, h4, h5, h6,
         height: 34px;
     }
 }
+
+/* Mendefinisikan animasi "flash-in" */
+@keyframes flash-in {
+    0% {
+        /* Mulai dengan warna latar normal (dari variabel Anda) */
+        background-color: var(--bg-card);
+    }
+    50% {
+        /* Puncak animasi: sedikit membesar dan berwarna biru muda */
+        background-color: rgba(13, 110, 253, 0.15); /* Primary --color-primary transparan */
+        transform: scale(1.01);
+    }
+    100% {
+        /* Kembali normal */
+        background-color: var(--bg-card);
+        transform: scale(1);
+    }
+}
+
+/* Kelas yang akan ditambahkan oleh JavaScript */
+.flash-in-item {
+    /* Terapkan animasi: nama, durasi, dan cara animasi berjalan */
+    animation: flash-in 1.2s ease-out;
+}

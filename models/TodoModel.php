@@ -112,12 +112,20 @@ class TodoModel
      */
     public function createTodo($title, $description)
     {
-        // Query untuk insert, sekaligus mengambil max(sort_order) + 1
+        // PERUBAHAN: Tambahkan "RETURNING id" untuk mendapatkan ID baru
         $query = 'INSERT INTO todo (title, description, sort_order) 
-                  VALUES ($1, $2, (SELECT COALESCE(MAX(sort_order), 0) + 1 FROM todo))';
+                  VALUES ($1, $2, (SELECT COALESCE(MAX(sort_order), 0) + 1 FROM todo))
+                  RETURNING id'; // <-- TAMBAHAN DI SINI
         try {
             $result = pg_query_params($this->conn, $query, [$title, $description]);
-            return $result !== false;
+            
+            if ($result && pg_num_rows($result) > 0) {
+                // Ambil ID yang dikembalikan
+                $row = pg_fetch_assoc($result);
+                return (int)$row['id']; // Kembalikan ID
+            }
+            return false; // Gagal insert
+
         } catch (Exception $e) {
             error_log("Gagal createTodo: " . $e->getMessage());
             return false;
