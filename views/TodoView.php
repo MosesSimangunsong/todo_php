@@ -365,52 +365,61 @@
     </Gscript>
 
     <script>
-        // Jalankan skrip setelah DOM selesai dimuat
-        document.addEventListener('DOMContentLoaded', function () {
+    // Jalankan skrip setelah DOM selesai dimuat
+    document.addEventListener('DOMContentLoaded', function () {
+        
+        // 1. Inisialisasi semua Tooltip
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+        [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+
+        // 2. Tampilkan Toast Sukses (jika ada) - INI YANG HILANG
+        const successToastEl = document.getElementById('successToast');
+        if (successToastEl) {
+            const successToast = new bootstrap.Toast(successToastEl, { delay: 3000 }); // Hilang setelah 3 detik
+            successToast.show();
+        }
+
+        // 3. Tampilkan Toast Error (jika ada) - INI YANG HILANG
+        const errorToastEl = document.getElementById('errorToast');
+        if (errorToastEl) {
+            const errorToast = new bootstrap.Toast(errorToastEl, { delay: 5000 }); // Hilang setelah 5 detik
+            errorToast.show();
+        }
+
+        /* * =============================================
+         * ==      BLOK ANIMASI BARU (TAMBAHKAN INI)  ==
+         * =============================================
+         */
+        <?php if (isset($_SESSION['highlight_id'])): ?>
             
-            // 1. Inisialisasi semua Tooltip
-            const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
-            [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
-
-            // 2. Tampilkan Toast Sukses (jika ada)
-            const successToastEl = document.getElementById('successToast');
-            if (successToastEl) {
-                const successToast = new bootstrap.Toast(successToastEl, { delay: 3000 }); // Hilang setelah 3 detik
-                successToast.show();
+            // Ambil ID yang disimpan dari PHP Session
+            const highlightId = '<?= (int)$_SESSION['highlight_id'] ?>';
+            
+            // Cari elemen .list-group-item yang sesuai dengan ID tersebut
+            const highlightedElement = document.querySelector(`.list-group-item[data-id="${highlightId}"]`);
+            
+            if (highlightedElement) {
+                // 1. Gulir halaman agar elemen terlihat (di tengah layar)
+                highlightedElement.scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'center' 
+                });
+                
+                // 2. Tambahkan kelas CSS untuk memicu animasi
+                highlightedElement.classList.add('flash-in-item');
             }
+            
+            // 3. Hapus session agar tidak berulang saat di-refresh lagi
+            <?php unset($_SESSION['highlight_id']); ?>
+            
+        <?php endif; ?>
+        /* =============================================
+         * ==      AKHIR BLOK ANIMASI BARU          ==
+         * =============================================
+         */
 
-            // 3. Tampilkan Toast Error (jika ada)
-            const errorToastEl = document.getElementById('errorToast');
-            if (errorToastEl) {
-                const errorToast = new bootstrap.Toast(errorToastEl, { delay: 5000 }); // Hilang setelah 5 detik
-                errorToast.show();
-            }
-
-            <?php if (isset($_SESSION['highlight_id'])): ?>
-                
-                // Ambil ID yang disimpan dari PHP Session
-                const highlightId = '<?= (int)$_SESSION['highlight_id'] ?>';
-                
-                // Cari elemen .list-group-item yang sesuai dengan ID tersebut
-                const highlightedElement = document.querySelector(`.list-group-item[data-id="${highlightId}"]`);
-                
-                if (highlightedElement) {
-                    // 1. Gulir halaman agar elemen terlihat (di tengah layar)
-                    highlightedElement.scrollIntoView({ 
-                        behavior: 'smooth', 
-                        block: 'center' 
-                    });
-                    
-                    // 2. Tambahkan kelas CSS untuk memicu animasi
-                    highlightedElement.classList.add('flash-in-item');
-                }
-                
-                // 3. Hapus session agar tidak berulang saat di-refresh lagi
-                <?php unset($_SESSION['highlight_id']); ?>
-                
-            <?php endif; ?>
-        });
-    </script>
+    });
+</script>
 
 </body>
 </html>

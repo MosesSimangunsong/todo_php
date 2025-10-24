@@ -87,7 +87,7 @@ class TodoController
             $id = $_POST['id'];
             $title = $_POST['title'];
             $description = $_POST['description'];
-            // PERBAIKAN KECIL: Pastikan ini dikonversi ke boolean
+            // Konversi nilai 'true'/'false' string dari form ke boolean
             $is_finished = (isset($_POST['is_finished']) && $_POST['is_finished'] === 'true');
 
             if ($this->todoModel->isTitleExists($title, $id)) {
