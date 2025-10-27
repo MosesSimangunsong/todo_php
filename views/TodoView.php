@@ -362,7 +362,7 @@
                 }
             });
         }
-    </Gscript>
+    </script>
 
     <script>
     // Jalankan skrip setelah DOM selesai dimuat
