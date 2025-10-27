@@ -19,6 +19,7 @@
     
     <title>Detail Todo - <?= htmlspecialchars($todo['title']) ?></title>
     
+    <link rel="icon" type="image/png" href="/assets/img/favicon.png">
     <link href="/assets/vendor/bootstrap-5.3.8-dist/css/bootstrap.min.css" rel="stylesheet" />
     
     <link rel="stylesheet" href="/assets/css/custom.css">
